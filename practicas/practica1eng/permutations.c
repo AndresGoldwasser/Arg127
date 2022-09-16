@@ -31,7 +31,7 @@ int random_num(int inf, int sup)
 {
   int num;
 
-  num=(rand() % (sup+inf+1))-(inf);
+  num=(rand() % (sup-inf+1))+inf;
 
   return num;
 }
@@ -51,7 +51,27 @@ int random_num(int inf, int sup)
 /***************************************************/
 int* generate_perm(int N)
 {
-  /* your code */
+  int i, j, temp1, temp2, *perm;
+
+  if(N<1) return NULL;
+
+  perm=(int*)malloc(N*sizeof(int));
+    if(!perm)
+      return NULL;
+  
+  for (i=0;i<N;i++){
+    perm[i]=i;
+  }
+
+  for (i=0;i<N;i++){
+    j=perm[random_num(i,N-1)];
+    temp1=perm[j];
+    temp2=perm[i];
+    perm[i]=temp1;
+    perm[j]=temp2;
+  }
+
+  return perm;
 }
 
 /***************************************************/
@@ -71,5 +91,24 @@ int* generate_perm(int N)
 /***************************************************/
 int** generate_permutations(int n_perms, int N)
 {
-/* your code */
+  int i, **perm_library;
+
+  if (n_perms==0||N==0) return NULL;
+
+  perm_library=(int**)malloc(n_perms*sizeof(int*));
+  if(!perm_library)
+    return NULL;
+  
+  for(i=0;i<n_perms;i++){
+    perm_library[i]=generate_perm(N);
+    if(perm_library[i]==NULL)
+      break;
+  }
+
+  if(i!=n_perms){
+    return NULL;
+  }
+  else {
+    return perm_library;
+  }
 }
