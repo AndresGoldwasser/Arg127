@@ -31,7 +31,7 @@ int random_num(int inf, int sup)
 {
   int num;
 
-  num=(rand() % sup+inf)-(inf-1);
+  num=(rand() % (sup+inf+1))-(inf);
 
   return num;
 }
