@@ -9,6 +9,7 @@
  *
  */
 
+#include "time.h"
 #include "times.h"
 #include "sorting.h"
 

@@ -23,7 +23,7 @@ int SelectSort(int* array, int ip, int iu)
 
   cont=0;
   for(i=ip;i<iu;i++){
-    minnin=min(array, ip, iu);
+    minnin=min(array, i, iu);
     temp1=array[minnin];
     temp2=array[i];
     array[i]=temp1;
@@ -42,10 +42,10 @@ int SelectSortInv(int* array, int ip, int iu)
 int min(int* array, int ip, int iu)
 {
   int aux,i;
-  aux=array[ip];
-  for(i=ip+1;i<iu;i++){
-    if(aux>array[i])
-      aux=array[i];
+  aux=ip;
+  for(i=ip+1;i<=iu;i++){
+    if(array[aux]>array[i])
+      aux=i;
   }
 
   return aux;

@@ -18,7 +18,7 @@
 int main(int argc, char** argv)
 {
   int tamano, i, j, ret;
-  int* perm = NULL;
+  int *perm = NULL;
 
   srand(time(NULL));
 
@@ -58,7 +58,7 @@ int main(int argc, char** argv)
   }
 
   for(j = 0; j < tamano; j++) {
-    printf("%d \t", perm[j]);
+    printf("%d ", perm[j]);
   }
   printf("\n");
 

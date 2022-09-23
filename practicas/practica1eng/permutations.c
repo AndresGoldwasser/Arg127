@@ -64,7 +64,7 @@ int* generate_perm(int N)
   }
 
   for (i=0;i<N;i++){
-    j=perm[random_num(i,N-1)];
+    j=random_num(i,N-1);
     temp1=perm[j];
     temp2=perm[i];
     perm[i]=temp1;
