@@ -53,18 +53,21 @@ short average_sorting_time(pfunc_sort metodo,
       return ERR;
     }
 
-    metodo(perms[i], 0, n_perms - 1);
+    array_perms[i] = metodo(perms[i], 0, n_perms - 1);
 
     if (clock_gettime( CLOCK_REALTIME, &end) == -1 ){
       return ERR;
     }
-    array_times[i] = ( stop.tv_sec - start.tv_sec ) + (double)( stop.tv_nsec - start.tv_nsec ) / BILLION;
+    array_time[i] = ( stop.tv_sec - start.tv_sec ) + (double)( stop.tv_nsec - start.tv_nsec ) / BILLION;
   }
 
   /*Calcular media*/
-  ptime->average_ob = media(array, N);
-  ptime->max_ob = 
-  ptime->min_ob = array[min(array, 0, N - 1)]; 
+  ptime->time = media(array_time, N);
+  ptime->average_ob = media(array_perms, N);
+  ptime->max_ob = array_perms[max(array_perms, 0, N - 1)]; 
+  ptime->min_ob = array_perms[min(array_perms, 0, N - 1)];
+
+  return OK;
 
 }
 
