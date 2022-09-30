@@ -89,7 +89,21 @@ short generate_sorting_times(pfunc_sort method, char* file,
 /***************************************************/
 short save_time_table(char* file, PTIME_AA ptime, int n_times)
 {
-  /* your code */
-}
+  int i;
+  FILE *f;
 
+  if(!file||!ptime||n_times<1) return ERR;
+
+  f=fopen(file,"w");
+  if(!f) return ERR;
+
+  fprintf(f,"Tamaño\tTime\tAvr. OB\tMin OB\tMax OB\n");
+
+  for(i=0;i<n_times;i++){
+    fprintf(f,"%d\t%lf\t%lf\t%d\t%d\n",ptime[i].N,ptime[i].time,ptime[i].average_ob,ptime[i].min_ob,ptime[i].max_ob);
+  }
+
+  fclose(f);
+  return OK;
+}
 
