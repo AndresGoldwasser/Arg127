@@ -20,6 +20,9 @@
 #endif
 
 #include "sorting.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include "permutations.h"
 
 /* type definitions */
 typedef struct time_aa {
@@ -36,5 +39,7 @@ typedef struct time_aa {
 short average_sorting_time(pfunc_sort method, int n_perms,int N, PTIME_AA ptime);
 short generate_sorting_times(pfunc_sort method, char* file, int num_min, int num_max, int incr, int n_perms);
 short save_time_table(char* file, PTIME_AA time, int n_times);
+int mina(double* array, int ip, int iu);
+int maxa(double* array, int ip, int iu);
 
 #endif

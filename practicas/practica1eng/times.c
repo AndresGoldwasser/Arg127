@@ -15,7 +15,7 @@
 
 #define BILLION  1E9
 
-double media(int* array, int N){
+double media(double* array, int N){
   double suma=0;
   int i;
 
@@ -63,7 +63,7 @@ short average_sorting_time(pfunc_sort metodo,
   /*Calcular media*/
   ptime->time = media(array_time, N);
   ptime->average_ob = media(array_perms, N);
-  ptime->max_ob = array_perms[max(array_perms, 0, N - 1)]; 
+  ptime->max_ob = array_perms[maxa(array_perms, 0, N - 1)]; 
   ptime->min_ob = array_perms[mina(array_perms, 0, N - 1)];
 
   return OK;
@@ -79,17 +79,16 @@ short generate_sorting_times(pfunc_sort method, char* file,
                                 int num_min, int num_max, 
                                 int incr, int n_perms)
 {
-  PTIME_AA *time;
+  PTIME_AA time;
   int i, ind;
   int mem=0;
   
   for(i=num_min ; i < num_max; i+=incr, mem++);
 
-  time = (PTIME_AA*)malloc(mem*sizeof(PTIME_AA));
+  time = (PTIME_AA)malloc(mem*sizeof(TIME_AA));
 
   for(i=num_min, ind=0; i < num_max; i+=incr, ind++){
-    time[ind] = (PTIME_AA*)malloc(1*sizeof(TIME_AA));
-    average_sorting_time(method, n_perms, i, time[ind]);
+    average_sorting_time(method, n_perms, i, &time[ind]);
   }
 
   save_time_table(file, time, mem);
@@ -115,10 +114,33 @@ short save_time_table(char* file, PTIME_AA ptime, int n_times)
   fprintf(f,"Tamaño\tTime\tAvr. OB\tMin OB\tMax OB\n");
 
   for(i=0;i<n_times;i++){
-    fprintf(f,"%d\t%lf\t%lf\t%d\t%d\n",ptime[i].N,ptime[i].time,ptime[i].average_ob,ptime[i].min_ob,ptime[i].max_ob);
+    fprintf(f,"%d\t%f\t%f\t%d\t%d\n",ptime[i].N,ptime[i].time,ptime[i].average_ob,ptime[i].min_ob,ptime[i].max_ob);
   }
 
   fclose(f);
   return OK;
 }
 
+int mina(double* array, int ip, int iu)
+{
+  int aux,i;
+  aux=ip;
+  for(i=ip+1;i<=iu;i++){
+    if(array[aux]>array[i])
+      aux=i;
+  }
+
+  return aux;
+}
+
+int maxa(double* array, int ip, int iu)
+{
+  int aux,i;
+  aux=ip;
+  for(i=ip+1;i<=iu;i++){
+    if(array[aux]<array[i])
+      aux=i;
+  }
+
+  return aux;
+}
