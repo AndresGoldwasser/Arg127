@@ -79,7 +79,22 @@ short generate_sorting_times(pfunc_sort method, char* file,
                                 int num_min, int num_max, 
                                 int incr, int n_perms)
 {
+  PTIME_AA *time;
+  int i, ind;
+  int mem=0;
   
+  for(i=num_min ; i < num_max; i+=incr, mem++);
+
+  time = (PTIME_AA*)malloc(mem*sizeof(PTIME_AA));
+
+  for(i=num_min, ind=0; i < num_max; i+=incr, ind++){
+    time[ind] = (PTIME_AA*)malloc(1*sizeof(TIME_AA));
+    average_sorting_time(method, n_perms, i, time[ind]);
+  }
+
+  save_time_table(file, time, mem);
+
+  return OK;
 }
 
 /***************************************************/
