@@ -54,17 +54,17 @@ short average_sorting_time(pfunc_sort metodo,
 
     start = clock();
 
-    array_perms[i] = metodo(perms[i], 0, n_perms - 1);
+    array_perms[i] = metodo(perms[i], 0, N - 1);
 
     stop = clock();
     array_time[i] = (stop - start) / CLOCKS_PER_SEC;
   }
 
   /*Calcular media*/
-  ptime->time = media(array_time, N);
-  ptime->average_ob = media(array_perms, N);
-  ptime->max_ob = array_perms[maxa(array_perms, 0, N - 1)]; 
-  ptime->min_ob = array_perms[mina(array_perms, 0, N - 1)];
+  ptime->time = media(array_time, n_perms);
+  ptime->average_ob = media(array_perms, n_perms);
+  ptime->max_ob = array_perms[maxa(array_perms, 0, n_perms - 1)]; 
+  ptime->min_ob = array_perms[mina(array_perms, 0, n_perms - 1)];
 
   return OK;
 
