@@ -36,36 +36,35 @@ short average_sorting_time(pfunc_sort metodo,
                               int N, 
                               PTIME_AA ptime)
 {
-  int i, begin, end;
-  struct timespec start, stop;
-  double array_time[N];
-  double array_perms[N];
+  int i;
+  clock_t start, stop;
+  double *array_time;
+  double *array_perms;
   int** perms = NULL;
   ptime->N = N;
   ptime->n_elems = n_perms;
 
+  array_time = (double*)malloc(N*sizeof(double));
+  array_perms = (double*)malloc(N*sizeof(double));
+
   perms = (int**)malloc(N*sizeof(int*));
   perms = generate_permutations(n_perms, N);
 
-  for(i=0 ; i < N ; i ++){
+  for(i=0 ; i < n_perms ; i ++){
 
-    if (clock_gettime( CLOCK_REALTIME, &start) == -1 ){
-      return ERR;
-    }
+    start = clock();
 
     array_perms[i] = metodo(perms[i], 0, n_perms - 1);
 
-    if (clock_gettime( CLOCK_REALTIME, &end) == -1 ){
-      return ERR;
-    }
-    array_time[i] = ( stop.tv_sec - start.tv_sec ) + (double)( stop.tv_nsec - start.tv_nsec ) / BILLION;
+    stop = clock();
+    array_time[i] = (stop - start) / CLOCKS_PER_SEC;
   }
 
   /*Calcular media*/
   ptime->time = media(array_time, N);
   ptime->average_ob = media(array_perms, N);
   ptime->max_ob = array_perms[max(array_perms, 0, N - 1)]; 
-  ptime->min_ob = array_perms[min(array_perms, 0, N - 1)];
+  ptime->min_ob = array_perms[mina(array_perms, 0, N - 1)];
 
   return OK;
 
