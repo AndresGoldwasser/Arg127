@@ -36,7 +36,20 @@ int SelectSort(int* array, int ip, int iu)
 
 int SelectSortInv(int* array, int ip, int iu)
 {
-  /* your code */
+  int i,maxam,temp1,temp2,cont;
+  if(!array||iu<ip) return ERR;
+
+  cont=0;
+  for(i=ip;i<iu;i++){
+    maxam=max(array, i, iu);
+    temp1=array[maxam];
+    temp2=array[i];
+    array[i]=temp1;
+    array[maxam]=temp2;
+    cont++;
+  }
+
+  return cont;
 }
 
 int min(int* array, int ip, int iu)
@@ -51,3 +64,14 @@ int min(int* array, int ip, int iu)
   return aux;
 }
 
+int max(int* array, int ip, int iu)
+{
+  int aux,i;
+  aux=ip;
+  for(i=ip+1;i<=iu;i++){
+    if(array[aux]<array[i])
+      aux=i;
+  }
+
+  return aux;
+}
