@@ -26,7 +26,7 @@ typedef int (* pfunc_sort)(int*, int, int);
 
 int SelectSort(int* array, int ip, int iu);
 int SelectSortInv(int* array, int ip, int iu);
-int min(int* array, int ip, int iu);
-int max(int* array, int ip, int iu);
+int min(int* array, int ip, int iu, int *count);
+int max(int* array, int ip, int iu, int *count);
 
 #endif

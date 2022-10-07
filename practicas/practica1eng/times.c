@@ -44,8 +44,8 @@ short average_sorting_time(pfunc_sort metodo,
   ptime->N = N;
   ptime->n_elems = n_perms;
 
-  array_time = (double*)malloc(N*sizeof(double));
-  array_perms = (double*)malloc(N*sizeof(double));
+  array_time = (double*)malloc(n_perms*sizeof(double));
+  array_perms = (double*)malloc(n_perms*sizeof(double));
 
   perms = (int**)malloc(N*sizeof(int*));
   perms = generate_permutations(n_perms, N);
@@ -57,8 +57,9 @@ short average_sorting_time(pfunc_sort metodo,
     array_perms[i] = metodo(perms[i], 0, N - 1);
 
     stop = clock();
-    array_time[i] = (stop - start) / CLOCKS_PER_SEC;
+    array_time[i] = (double) (stop - start) / CLOCKS_PER_SEC;
   }
+
 
   /*Calcular media*/
   ptime->time = media(array_time, n_perms);
@@ -114,7 +115,7 @@ short save_time_table(char* file, PTIME_AA ptime, int n_times)
   fprintf(f,"Tamaño\tTime\tAvr. OB\tMin OB\tMax OB\n");
 
   for(i=0;i<n_times;i++){
-    fprintf(f,"%d\t%f\t%f\t%d\t%d\n",ptime[i].N,ptime[i].time,ptime[i].average_ob,ptime[i].min_ob,ptime[i].max_ob);
+    fprintf(f,"%d\t%E\t%.0f\t%d\t%d\n",ptime[i].N,ptime[i].time,ptime[i].average_ob,ptime[i].min_ob,ptime[i].max_ob);
   }
 
   fclose(f);
