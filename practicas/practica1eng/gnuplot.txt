@@ -1,5 +1,1 @@
 plot "ej1.txt" smooth freq with boxes
-plot "ej1.txt" smooth freq with boxes
-plot 'exercise5.log' u 1:2 title "time SelectSortINV", 'exercise52.log' u 1:2 title "time SelectSort", (0.708*x)**2 title "n^2"
-plot 'exercise5.log' u 1:2, (0.0000325*x)**2
-plot 'exercise5.log' u 1:3 title "OB SelectSortINV", 'exercise52.log' u 1:3 title "OB SelectSort", (0.708*x)**2 title "n^2"

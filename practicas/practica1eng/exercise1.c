@@ -23,12 +23,6 @@ int main(int argc, char** argv)
 {
   int i;
   unsigned int inf, sup, num, j;
-  FILE *f;
-
-  f = fopen("ej1.txt", "w");
-  if(f==NULL){
-    return -1;
-  }
 
   srand(time(NULL));
 
@@ -61,7 +55,6 @@ int main(int argc, char** argv)
   /* print data */
   for(j = 0; j < num; j++) { 
     printf("%d\n", random_num(inf, sup));
-    fprintf(f, "%d\n", random_num(inf, sup));
   }
 
   return 0;

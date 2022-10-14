@@ -24,11 +24,16 @@ int SelectSort(int* array, int ip, int iu)
   cont=0;
   for(i=ip;i<iu;i++){
     minnin=min(array, i, iu, &cont);
+    if(minnin==ERR)
+      break;
     temp1=array[minnin];
     temp2=array[i];
     array[i]=temp1;
     array[minnin]=temp2;
   }
+
+  if(minnin==ERR)
+    return ERR;
 
   return cont;
 }
@@ -41,11 +46,16 @@ int SelectSortInv(int* array, int ip, int iu)
   cont=0;
   for(i=ip;i<iu;i++){
     maxam=max(array, i, iu, &cont);
+    if(maxam==ERR)
+      break;
     temp1=array[maxam];
     temp2=array[i];
     array[i]=temp1;
     array[maxam]=temp2;
   }
+
+  if(maxam==ERR)
+    return ERR;
 
   return cont;
 }
@@ -53,6 +63,9 @@ int SelectSortInv(int* array, int ip, int iu)
 int min(int* array, int ip, int iu, int *count)
 {
   int aux,i;
+
+  if(!array||iu<ip||!count) return ERR;
+
   aux=ip;
   for(i=ip+1;i<=iu;i++){
     if(array[aux]>array[i]){
@@ -67,6 +80,9 @@ int min(int* array, int ip, int iu, int *count)
 int max(int* array, int ip, int iu, int *count)
 {
   int aux,i;
+
+  if(!array||iu<ip||!count) return ERR;
+
   aux=ip;
   for(i=ip+1;i<=iu;i++){
     if(array[aux]<array[i]){

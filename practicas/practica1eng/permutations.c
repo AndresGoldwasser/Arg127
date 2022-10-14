@@ -28,8 +28,10 @@
 /* int: random number                              */
 /***************************************************/
 int random_num(int inf, int sup)
-{
+{ 
   int num;
+
+  if(inf>sup) return ERR;
 
   num=(rand() % (sup-inf+1))+inf;
 
@@ -91,9 +93,9 @@ int* generate_perm(int N)
 /***************************************************/
 int** generate_permutations(int n_perms, int N)
 {
-  int i, **perm_library;
+  int i, j, **perm_library;
 
-  if (n_perms==0||N==0) return NULL;
+  if (n_perms<1||N<1) return NULL;
 
   perm_library=(int**)malloc(n_perms*sizeof(int*));
   if(!perm_library)
@@ -101,8 +103,13 @@ int** generate_permutations(int n_perms, int N)
   
   for(i=0;i<n_perms;i++){
     perm_library[i]=generate_perm(N);
-    if(perm_library[i]==NULL)
+    if(perm_library[i]==NULL){
+      for (j=0;j<i;j++){
+        free(perm_library[j]);
+      }
+      free(perm_library);
       break;
+    }
   }
 
   if(i!=n_perms){
