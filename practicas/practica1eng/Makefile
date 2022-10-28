@@ -60,4 +60,5 @@ exercise4_test:
 exercise5_test:
 	@echo Running exercise5
 	@./exercise5 -num_min 1 -num_max 500 -incr 1 -numP 70 -outputFile exercise5.log
-
+valgrind:
+	valgrind --leak-check=full --track-origins=yes
