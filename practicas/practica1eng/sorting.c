@@ -80,6 +80,11 @@ int mergesort(int* tabla, int ip, int iu)
 {
   int im=0, count=0, ret;
   
+  /*CONTROL ERROR*/
+  if(!tabla || ip > iu){
+    return ERR;
+  }
+
   /********BASE CASE********/
   if(ip == iu){
     return OK;
@@ -118,6 +123,11 @@ int mergesort(int* tabla, int ip, int iu)
 int merge(int* tabla, int ip, int iu, int imedio, int *count){
   int *aux;
   int i,j,k;
+
+  /*CONTROL ERROR*/
+  if(!tabla || ip > imedio || imedio > iu){
+    return ERR;
+  }
 
   /*SAVES MEMORY FOR A SIZED TABLE*/
   aux = (int*) malloc((iu-ip+1)*sizeof(int));
