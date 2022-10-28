@@ -220,3 +220,90 @@ int icopytable(int* or, int* des, int ip, int iu){
 
   return OK;
 }
+
+int median(int *tabla, int ip, int iu,int *pos){
+  if(!tabla||iu<ip||!pos) return ERR;
+
+  *pos=ip;
+  return 0;
+}
+
+int partition(int* tabla, int ip, int iu,int *pos){
+  int val,auxval1,auxval2,i,count,check;
+
+  if(!tabla||iu<ip||!pos) return ERR;
+
+  check=median(tabla,ip,iu,pos);
+  if(check==ERR)
+    return ERR;
+  
+  count=0;
+
+  val=tabla[*pos];
+
+  auxval1=tabla[ip];
+  tabla[*pos]=auxval1;
+  tabla[ip]=val;
+
+  *pos=ip;
+
+  for(i=(*pos)+1;i<=iu;i++){
+    if(tabla[i]<val){
+      (*pos)++;
+
+      auxval1=tabla[i];
+      auxval2=tabla[*pos];
+      tabla[i]=auxval2;
+      tabla[*pos]=auxval1;
+    }
+    count++;
+  }
+  
+  auxval1=tabla[ip];
+  auxval2=tabla[*pos];
+  tabla[ip]=auxval2;
+  tabla[*pos]=auxval1;
+
+  return count;
+}
+
+int quicksort(int* tabla, int ip, int iu){
+  int pos,count;
+
+  if(!tabla||iu<ip) return ERR;
+
+  count=0;
+
+  if(ip==iu) 
+    return 0;
+  else{
+    count=partition(tabla,ip,iu,&pos);
+    if(ip<pos-1){
+      count=quicksort(tabla,ip,pos-1);
+    }
+    if (pos+1<iu){
+      count=quicksort(tabla,pos+1,iu);
+    }
+  }
+
+  return count;
+}
+
+int median_avg(int *tabla, int ip, int iu, int *pos){
+  if (!tabla||iu<ip||!pos) return ERR;
+
+  *pos=((iu+ip)/2);
+
+  return 0;
+}
+
+int median_stat(int *tabla, int ip, int iu, int *pos){
+  int i,j,k;
+  if (!tabla||iu<ip||!pos) return ERR;
+
+  i=tabla[ip];
+  j=tabla[iu];
+  k=tabla[(ip+iu)/2];
+
+  printf("faltan cosas");
+}
