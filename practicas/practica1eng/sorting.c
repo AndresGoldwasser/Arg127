@@ -13,7 +13,11 @@
 #include "sorting.h"
 #include <stdlib.h>
 
-int merge(int* tabla, int ip, int iu, int imedio);
+
+/*Private Functions*/
+int min(int* array, int ip, int iu, int *count);
+int max(int* array, int ip, int iu, int *count);
+int merge(int* tabla, int ip, int iu, int imedio, int *count);
 int icopytable(int* or, int* des, int ip, int iu);
 
 /***************************************************/
@@ -42,6 +46,10 @@ int SelectSort(int* array, int ip, int iu)
   return cont;
 }
 
+/***************************************************/
+/* Function: SelectSortInv    Date:                */
+/* Your comment                                    */
+/***************************************************/
 int SelectSortInv(int* array, int ip, int iu)
 {
   int i,maxam,temp1,temp2,cont;
@@ -62,6 +70,98 @@ int SelectSortInv(int* array, int ip, int iu)
     return ERR;
 
   return cont;
+}
+
+/***************************************************/
+/* Function: MergeSort    Date:                    */
+/* Your comment                                    */
+/***************************************************/
+int mergesort(int* tabla, int ip, int iu)
+{
+  int im=0, count=0, ret;
+  
+  /********BASE CASE********/
+  if(ip == iu){
+    return OK;
+  }
+
+  /********GENERAL CASE********/
+
+  /*CALCULATES MEDIUM ELEMENT*/
+  im = (ip+iu)/2;
+
+  /*SORT FIRST HALF*/
+  ret = mergesort(tabla, ip, im);
+  if(ret==ERR){
+    return ERR;
+  }
+  count += ret;
+  
+  /*SORT SECOND HALF*/
+  ret = mergesort(tabla, im+1, iu);
+  if(ret==ERR){
+    return ERR;
+  }
+  count += ret;
+
+  /*MERGE BOTH HALVES*/
+  ret = merge(tabla, ip, iu, im, &count);
+  if(ret==ERR){
+    return ERR;
+  }
+  count += ret;
+
+  return count;
+
+}
+
+int merge(int* tabla, int ip, int iu, int imedio, int *count){
+  int *aux;
+  int i,j,k;
+
+  /*SAVES MEMORY FOR A SIZED TABLE*/
+  aux = (int*) malloc((iu-ip+1)*sizeof(int));
+  /*MEMORY CONTROL ERROR*/
+  if(aux==NULL){
+    return ERR;
+  }
+
+  /*FILLS THE NEW TABLE*/
+  for(i=ip, j=imedio+1, k=0 ; i<imedio+1 && j<iu+1 ;k++){
+    if(tabla[i] < tabla[j]){
+      aux[k] = tabla[i];
+      i++;
+    }
+    else{
+      aux[k] = tabla[j];
+      j++;
+    }
+    (*count)++;
+  }
+
+  /*ADDS THE REST OF THE ELEMENTS*/
+  while(i<imedio+1){
+    aux[k] = tabla[i];
+    i++;
+    k++;
+  }
+  while(j<iu+1){
+    aux[k] = tabla[j];
+    j++;
+    k++;
+  }
+
+  /*COPIES THE TABLE ON THE TABLE THAT WAS SENT*/
+  if (icopytable(aux, tabla, ip, iu) == ERR){
+    free(aux);
+    return ERR;
+  }
+
+  /*FREES MEMORY*/
+  free(aux);
+
+  return OK;
+
 }
 
 int min(int* array, int ip, int iu, int *count)
@@ -98,74 +198,8 @@ int max(int* array, int ip, int iu, int *count)
   return aux;
 }
 
-int mergesort(int* tabla, int ip, int iu)
-{
-  int im, st;
-  
-  /*BASE CASE*/
-  if(ip == iu){
-    return OK;
-  }
-
-  /*GENERAL CASE*/
-  im = (ip+iu)/2;
-
-  st = mergesort(tabla, ip, im);
-  if(st==ERR){
-    return ERR;
-  }
-  
-  st = mergesort(tabla, im+1, iu);
-  if(st==ERR){
-    return ERR;
-  }
-
-  return merge(tabla, ip, iu, im);
-
-}
-
-int merge(int* tabla, int ip, int iu, int imedio){
-  int *aux;
-  int i,j,k;
-
-  aux = (int*) malloc((iu-ip+1)*sizeof(int));
-  if(aux==NULL){
-    return ERR;
-  }
-
-  for(i=ip, j=imedio+1, k=0 ; i<imedio+1 && j<iu+1 ;k++){
-    if(tabla[i] < tabla[j]){
-      aux[k] = tabla[i];
-      i++;
-    }
-    else{
-      aux[k] = tabla[j];
-      j++;
-    }
-  }
-
-  while(i<imedio+1){
-    aux[k] = tabla[i];
-    i++;
-    k++;
-  }
-
-  while(j<iu+1){
-    aux[k] = tabla[j];
-    j++;
-    k++;
-  }
-
-  if (icopytable(aux, tabla, ip, iu) == ERR){
-    free(aux);
-    return ERR;
-  }
-
-  free(aux);
-  return OK;
-
-}
-
+/*AUX FUNCTION*/
+/*COPIES THE TABLE 'OR' IN THE INDEX ('IP' TO 'IU') IN 'DES'*/
 int icopytable(int* or, int* des, int ip, int iu){
   
   int i, j;
