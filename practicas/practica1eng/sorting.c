@@ -110,7 +110,7 @@ int mergesort(int* tabla, int ip, int iu)
   count += ret;
 
   /*MERGE BOTH HALVES*/
-  ret = merge(tabla, ip, iu, im, &count);
+  ret = merge(tabla, ip, iu, im);
   if(ret==ERR){
     return ERR;
   }
@@ -125,7 +125,7 @@ int merge(int* tabla, int ip, int iu, int imedio, int *count){
   int i,j,k;
 
   /*CONTROL ERROR*/
-  if(!tabla || ip > imedio || imedio > iu){
+  if(!tabla || ip > imedio || imedio > iu || !count){
     return ERR;
   }
 
@@ -305,5 +305,16 @@ int median_stat(int *tabla, int ip, int iu, int *pos){
   j=tabla[iu];
   k=tabla[(ip+iu)/2];
 
-  printf("faltan cosas");
+  if((i<j && i>k) || (i>j && i<k)){
+    return ip;
+  }
+  if((j<i && j>k) || (j>i && j<k)){
+    return iu;
+  }
+  if((k<j && k>i) || (k>j && k<i)){
+    return (ip+iu)/2;
+  }
+
+  return ERR;
+
 }
