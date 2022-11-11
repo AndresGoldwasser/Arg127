@@ -17,7 +17,7 @@
 /*Private Functions*/
 int min(int* array, int ip, int iu, int *count);
 int max(int* array, int ip, int iu, int *count);
-int merge(int* tabla, int ip, int iu, int imedio, int *count);
+int merge(int* tabla, int ip, int iu, int imedio);
 int icopytable(int* or, int* des, int ip, int iu);
 
 /***************************************************/
@@ -120,12 +120,13 @@ int mergesort(int* tabla, int ip, int iu)
 
 }
 
-int merge(int* tabla, int ip, int iu, int imedio, int *count){
+int merge(int* tabla, int ip, int iu, int imedio){
   int *aux;
+  int count=0;
   int i,j,k;
 
   /*CONTROL ERROR*/
-  if(!tabla || ip > imedio || imedio > iu || !count){
+  if(!tabla || ip > imedio || imedio > iu){
     return ERR;
   }
 
@@ -146,7 +147,7 @@ int merge(int* tabla, int ip, int iu, int imedio, int *count){
       aux[k] = tabla[j];
       j++;
     }
-    (*count)++;
+    count++;
   }
 
   /*ADDS THE REST OF THE ELEMENTS*/
@@ -170,7 +171,7 @@ int merge(int* tabla, int ip, int iu, int imedio, int *count){
   /*FREES MEMORY*/
   free(aux);
 
-  return OK;
+  return count;
 
 }
 
