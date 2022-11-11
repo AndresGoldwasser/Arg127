@@ -278,12 +278,12 @@ int quicksort(int* tabla, int ip, int iu){
   if(ip==iu) 
     return 0;
   else{
-    count=partition(tabla,ip,iu,&pos);
+    count+=partition(tabla,ip,iu,&pos);
     if(ip<pos-1){
-      count=quicksort(tabla,ip,pos-1);
+      count+=quicksort(tabla,ip,pos-1);
     }
     if (pos+1<iu){
-      count=quicksort(tabla,pos+1,iu);
+      count+=quicksort(tabla,pos+1,iu);
     }
   }
 
@@ -306,14 +306,17 @@ int median_stat(int *tabla, int ip, int iu, int *pos){
   j=tabla[iu];
   k=tabla[(ip+iu)/2];
 
-  if((i<j && i>k) || (i>j && i<k)){
-    return ip;
+  if((i<=j && i>=k) || (i>=j && i<=k)){
+    *pos=ip;
+    return 0;
   }
-  if((j<i && j>k) || (j>i && j<k)){
-    return iu;
+  if((j<=i && j>=k) || (j>=i && j<=k)){
+    *pos=iu;
+    return 0;
   }
-  if((k<j && k>i) || (k>j && k<i)){
-    return (ip+iu)/2;
+  if((k<=j && k>=i) || (k>=j && k<=i)){
+    *pos=(ip+iu)/2;
+    return 0;
   }
 
   return ERR;
