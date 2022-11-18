@@ -125,6 +125,82 @@ short generate_sorting_times(pfunc_sort method, char* file,
 
   return check;
 }
+short average_search_time(pfunc_search method, pfunc_key_generator generator, char order, int N, int n_times, PTIME_AA ptime){
+  PDICT dict;
+  int i, *perm, *mem, pos;
+  double *array_time, *array_ob;
+  clock_t start, stop;
+
+  if(!ptime||n_times<1||N<1) return ERR;
+
+  dict=init_dictionary(N,order);
+  if(dict==NULL)
+    return ERR;
+
+  array_time = (double*)malloc(n_times*sizeof(double));
+  if(!array_time){
+    free_dictionary(dict);
+    return ERR;
+  }
+  array_ob = (double*)malloc(n_times*sizeof(double));
+  if(!array_ob){
+    free_dictionary(dict);
+    free(array_time);
+    return ERR;
+  }
+
+  perm=generate_perm(N);
+  if(!perm){
+    free_dictionary(dict);
+    free(array_time);
+    free(array_ob);
+    return ERR;
+  }
+
+  if(massive_insertion_dictionary(dict,perm,N)==ERR){
+    free(perm);
+    free_dictionary(dict);
+    free(array_time);
+    free(array_ob);
+    return ERR;
+  }
+
+  mem=(int*)malloc((N*n_times)*sizeof(int));
+  if(!mem){
+    free(perm);
+    free_dictionary(dict);
+    free(array_ob);
+    free(array_time);
+    return ERR;
+  }
+
+  generator(mem,n_times*N,N);
+
+  for(i=0 ; i < N*n_times ; i ++){
+
+    start = clock();
+
+    array_ob[i] = method(dict->table,0,N,mem[i], &pos);
+
+    stop = clock();
+    array_time[i] = (double) (stop - start) / CLOCKS_PER_SEC;
+  }
+
+  ptime->n_elems=N*n_times;
+  ptime->N=N;
+  ptime->time = media(array_time, N*n_times);
+  ptime->average_ob = media(array_ob, n_times*N);
+  ptime->max_ob = array_ob[maxa(array_ob, 0, (n_times*N)-1)]; 
+  ptime->min_ob = array_ob[mina(array_ob, 0, (n_times*N)-1)];
+
+  free_dictionary(dict);
+  free(array_ob);
+  free(array_time);
+  free(mem);
+  free(perm);
+
+  return OK;
+} 
 
 short generate_search_times(pfunc_search method, pfunc_key_generator generator, int order, char* file, int num_min, int num_max, int incr, int n_times){
   PTIME_AA time;
@@ -148,31 +224,6 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator, 
   free(time);
 
   return check;
-}
-
-/***************************************************/
-/* Function: save_time_table Date:                 */
-/*                                                 */
-/* Your documentation                              */
-/***************************************************/
-short save_time_table(char* file, PTIME_AA ptime, int n_times)
-{
-  int i;
-  FILE *f;
-
-  if(!file||!ptime||n_times<1) return ERR;
-
-  f=fopen(file,"w");
-  if(!f) return ERR;
-
-  fprintf(f,"Tamaño\tTime\tAvr. OB\tMin OB\tMax OB\n");
-
-  for(i=0;i<n_times;i++){
-    fprintf(f,"%d\t%E\t%.0f\t%d\t%d\n",ptime[i].N,ptime[i].time,ptime[i].average_ob,ptime[i].min_ob,ptime[i].max_ob);
-  }
-
-  fclose(f);
-  return OK;
 }
 
 int mina(double* array, int ip, int iu)
