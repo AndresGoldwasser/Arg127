@@ -126,6 +126,30 @@ short generate_sorting_times(pfunc_sort method, char* file,
   return check;
 }
 
+short generate_search_times(pfunc_search method, pfunc_key_generator generator, int order, char* file, int num_min, int num_max, int incr, int n_times){
+  PTIME_AA time;
+  int i, ind;
+  short check=OK;
+  int mem=0;
+
+  if(!file||n_times<1||num_max<num_min||!method||incr<1) return ERR;
+
+  for(i=num_min ; i < num_max; i+=incr, mem++);
+
+  time = (PTIME_AA)malloc(mem*sizeof(TIME_AA));
+
+  for(i=num_min, ind=0; i <= num_max && check==OK; ind++, i+=incr){
+    check=average_search_time(method, generator, order, i, n_times, &time[ind]);
+  }
+
+  if(check==OK)
+    check=save_time_table(file, time, mem);
+
+  free(time);
+
+  return check;
+}
+
 /***************************************************/
 /* Function: save_time_table Date:                 */
 /*                                                 */
