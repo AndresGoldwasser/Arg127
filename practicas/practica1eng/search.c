@@ -83,10 +83,11 @@ void free_dictionary(PDICT pdict)
   free(pdict->table);
   return;
 }
-
 int insert_dictionary(PDICT pdict, int key)
 {
-	/*ERROR CONTROL*/
+	int aux, j;
+  
+  /*ERROR CONTROL*/
   if(!pdict){
     return ERR;
   }
@@ -96,8 +97,22 @@ int insert_dictionary(PDICT pdict, int key)
     return ERR;
   }
 
-  pdict->table[pdict->n_data] = key;
-  pdict->n_data++;
+  /*ARRAY ISNT SORTED*/
+  if(pdict->order = NOT_SORTED){
+    pdict->table[pdict->n_data] = key;
+    pdict->n_data++;
+  }
+
+  /*ARRAY IS SORTED*/
+  else if(pdict->order = SORTED){
+    aux=pdict->table[pdict->n_data-1]; 
+    j=pdict->n_data-2;
+    while (j >= 0 && pdict->table[j]>aux){
+      pdict->table[j+1]=pdict->table[j]; 
+      j--;
+    }
+    pdict->table[j+1]=aux;
+  }
 
   return OK;
 }
