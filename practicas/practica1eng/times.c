@@ -226,6 +226,26 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator, 
   return check;
 }
 
+short save_time_table(char* file, PTIME_AA ptime, int n_times)
+{
+  int i;
+  FILE *f;
+
+  if(!file||!ptime||n_times<1) return ERR;
+
+  f=fopen(file,"w");
+  if(!f) return ERR;
+
+  fprintf(f,"Tamaño\tTime\tAvr. OB\tMin OB\tMax OB\n");
+
+  for(i=0;i<n_times;i++){
+    fprintf(f,"%d\t%E\t%.0f\t%d\t%d\n",ptime[i].N,ptime[i].time,ptime[i].average_ob,ptime[i].min_ob,ptime[i].max_ob);
+  }
+
+  fclose(f);
+  return OK;
+}
+
 int mina(double* array, int ip, int iu)
 {
   int aux,i;
