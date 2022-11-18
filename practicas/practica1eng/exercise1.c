@@ -1,61 +1,97 @@
 /***********************************************/
-/* Program: exercise1     Date:                */
+/* Program: exercise1     Date:             */
 /* Authors:                                    */
 /*                                             */
-/* Program that generates two random nunmbers  */
-/* between two given numbers                   */
+/* Program that checks the correct behaviour of*/
+/* linear search                               */
 /*                                             */
-/* Input: Command Line                         */
-/* -limInf: lower limit                        */
-/* -limSup: upper limit                        */
-/* -numN: ammount of numbers                   */
+/* Input: Command line                         */
+/*   -size: number of elements in the dictionary */
+/*   -key:  key to search                      */
+/*                                             */
 /* Output: 0: OK, -1: ERR                      */
 /***********************************************/
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <time.h>
+#include<stdlib.h>
+#include<stdio.h>
+#include<string.h>
+#include<time.h>
+
 #include "permutations.h"
+#include "search.h"
 
 int main(int argc, char** argv)
 {
-  int i;
-  unsigned int inf, sup, num, j;
+  int i, nob, pos;
+  unsigned int key, size;
+  PDICT pdict;
+  int *perm;
 
   srand(time(NULL));
 
-  if (argc != 7) {
-    fprintf(stderr, "Input parameter error:\n\n");
-    fprintf(stderr, "%s -limInf <int> -limSup <int> -numN <int>\n", argv[0]);
-    fprintf(stderr, "Where:\n");
-    fprintf(stderr, " -limInf : Lower limit.\n");
-    fprintf(stderr, " -limSup : Upper limit.\n");
-    fprintf(stderr, " -numN : ammout of mumbers to generate.\n");
+  if (argc != 5) {
+    fprintf(stderr, "Error in the input parameters:\n\n");
+    fprintf(stderr, "%s -size <int> -key <int>\n", argv[0]);
+    fprintf(stderr, "where:\n");
+    fprintf(stderr, " -size : number of elements in the table.\n");
+    fprintf(stderr, " -key : key to search.\n");
     exit(-1);
   }
-  printf("Practice no 1, Section 1\n");
-  printf("Done by: Andres Goldwasser and Ignacio Nunnez\n");
-  printf("Grupo: 1271\n");
 
-  /* check command line */
+  printf("Pratice number 3, section 1\n");
+  printf("Done by: Your names\n");
+  printf("Group: Your group\n");
+
+  /* comprueba la linea de comandos */
   for(i = 1; i < argc; i++) {
-    if (strcmp(argv[i], "-limInf") == 0) {
-      inf = atoi(argv[++i]);
-    } else if (strcmp(argv[i], "-limSup") == 0) {
-      sup = atoi(argv[++i]);
-    } else if (strcmp(argv[i], "-numN") == 0) {
-      num = atoi(argv[++i]);
+    if (strcmp(argv[i], "-size") == 0) {
+      size = atoi(argv[++i]);
+    } else if (strcmp(argv[i], "-key") == 0) {
+      key = atoi(argv[++i]);
     } else {
-      fprintf(stderr, "Wrong Parameter %s \n", argv[i]);
+      fprintf(stderr, "Parameter %s is invalid\n", argv[i]);
     }
   }
 
-  /* print data */
-  for(j = 0; j < num; j++) { 
-    printf("%d\n", random_num(inf, sup));
+  pdict = init_dictionary(size,NOT_SORTED);
+
+  if (pdict == NULL) {
+    /* error */
+    printf("Error: Dictionary could not be initialized\n");
+    exit(-1);
   }
+
+  perm = generate_perm(size);
+
+  if (perm == NULL) {
+    /* error */
+    printf("Error: No hay memoria\n");
+    free_dictionary(pdict);
+    exit(-1);
+  }
+
+  nob = massive_insertion_dictionary(pdict, perm, size);
+
+  if (nob == ERR) {
+    /* error */
+    printf("Error: Dictionary could not be created\n");
+    free(perm);
+    free_dictionary(pdict);
+    exit(-1);
+  }
+
+  nob = search_dictionary(pdict,key,&pos,lin_search);
+
+  if(nob >= 0) {
+    printf("Key %d found in position %d in %d basic op.\n",key,pos,nob);
+  } else if (nob==NOT_FOUND) {
+    printf("Key %d not found in table\n",key);
+  } else {
+    printf("Error when searching the key %d\n",key);
+  }
+
+  free(perm);
+  free_dictionary(pdict);
 
   return 0;
 }

@@ -5,7 +5,7 @@
 
 CC = gcc -ansi -pedantic
 CFLAGS = -Wall
-EXE = exercise1 exercise2 exercise3 exercise4 exercise5
+EXE = exercise1 exercise2
 
 all : $(EXE)
 
@@ -13,12 +13,12 @@ all : $(EXE)
 clean :
 	rm -f *.o core $(EXE)
 
-$(EXE) : % : %.o sorting.o times.o permutations.o
+$(EXE) : % : %.o sorting.o search.o times.o permutations.o
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"
 	@echo "# Has changed $<"
-	$(CC) $(CFLAGS) -o $@ $@.o sorting.o times.o permutations.o
+	$(CC) $(CFLAGS) -o $@ $@.o sorting.o search.o times.o permutations.o
 
 permutations.o : permutations.c permutations.h
 	@echo "#---------------------------"
@@ -34,31 +34,24 @@ sorting.o : sorting.c sorting.h
 	@echo "# Has changed $<"
 	$(CC) $(CFLAGS) -c $<
 
- times.o : times.c times.h
+search.o : search.c search.h
 	@echo "#---------------------------"
 	@echo "# Generating $@ "
 	@echo "# Depepends on $^"
 	@echo "# Has changed $<"
 	$(CC) $(CFLAGS) -c $<
-	
+
+times.o : times.c times.h
+	@echo "#---------------------------"
+	@echo "# Generating $@ "
+	@echo "# Depepends on $^"
+	@echo "# Has changed $<"
+	$(CC) $(CFLAGS) -c $<
+
 exercise1_test:
 	@echo Running exercise1
-	@./exercise1 -limInf 0 -limSup 100 -numN 1000000
+	@./exercise1 -size 10 -key 5
 
 exercise2_test:
 	@echo Running exercise2
-	@./exercise2 -size 1 -numP 5
-
-exercise3_test:
-	@echo Running exercise3
-	@./exercise3 -size 1 -numP 5
-
-exercise4_test:
-	@echo Running exercise4
-	@./exercise4 -size 15
-
-exercise5_test:
-	@echo Running exercise5
-	@./exercise5 -num_min 1 -num_max 500 -incr 1 -numP 70 -outputFile exercise5.log
-valgrind:
-	valgrind --leak-check=full --track-origins=yes
+	@./exercise2 -num_min 1 -num_max 5 -incr 1 -n_times 1 -outputFile exercise5.log
