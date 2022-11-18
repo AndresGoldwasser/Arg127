@@ -62,7 +62,7 @@ int* generate_perm(int N)
       return NULL;
   
   for (i=0;i<N;i++){
-    perm[i]=i;
+    perm[i]=i+1;
   }
 
   for (i=0;i<N;i++){
@@ -75,6 +75,7 @@ int* generate_perm(int N)
 
   return perm;
 }
+
 
 /***************************************************/
 /* Function: generate_permutations Date:           */
