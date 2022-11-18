@@ -83,6 +83,7 @@ void free_dictionary(PDICT pdict)
   free(pdict->table);
   return;
 }
+
 int insert_dictionary(PDICT pdict, int key)
 {
 	int aux, j;
@@ -98,13 +99,13 @@ int insert_dictionary(PDICT pdict, int key)
   }
 
   /*ARRAY ISNT SORTED*/
-  if(pdict->order = NOT_SORTED){
+  if(pdict->order == NOT_SORTED){
     pdict->table[pdict->n_data] = key;
     pdict->n_data++;
   }
 
   /*ARRAY IS SORTED*/
-  else if(pdict->order = SORTED){
+  else if(pdict->order == SORTED){
     aux=pdict->table[pdict->n_data-1]; 
     j=pdict->n_data-2;
     while (j >= 0 && pdict->table[j]>aux){
@@ -114,8 +115,6 @@ int insert_dictionary(PDICT pdict, int key)
     pdict->table[j+1]=aux;
   }
 
-  return OK;
-}
 
 int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys)
 {
