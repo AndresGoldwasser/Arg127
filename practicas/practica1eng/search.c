@@ -58,7 +58,19 @@ void potential_key_generator(int *keys, int n_keys, int max)
 
 PDICT init_dictionary (int size, char order)
 {
-	/* your code */
+  PDICT dict;
+
+	if(size<=0||(order!=1&&order!=0))
+    return NULL;
+
+  dict->size=size;
+  dict->n_data=0;
+  dict->order=order;
+  dict->table=(int*)malloc(size*sizeof(int));
+  if(dict->table==NULL)
+    return NULL;
+
+  return dict;
 }
 
 void free_dictionary(PDICT pdict)
@@ -73,7 +85,18 @@ int insert_dictionary(PDICT pdict, int key)
 
 int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys)
 {
-	/* your code */
+  int i,flag;
+
+  if(pdict==NULL||keys==NULL||n_keys<=0) return ERR;
+
+  for(i=0,flag=OK;i<n_keys&&flag==OK;i++){
+    flag=insert_dictionary(pdict,keys[i]);
+  }
+
+  if(flag!=OK)
+    return ERR;
+  else
+    return OK;
 }
 
 int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method)
@@ -85,7 +108,28 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method)
 /* Search functions of the Dictionary ADT */
 int bin_search(int *table,int F,int L,int key, int *ppos)
 {
-	/* your code */
+	int i,count;
+  if(!table) return ERR;
+  
+  if(L<F){
+    *ppos=NOT_FOUND;
+    return 0;
+  }
+
+  i=(L-F)/2;
+  count=1;
+  if(table[i]==key){
+    *ppos=i;
+    return count;
+  }
+  else if(table[i]>key){
+    count+=bin_search(table,F,i-1,key,ppos);
+  }
+  else if(table[i]<key){
+    count+=bin_search(table,i+1,L,key,ppos);
+  }
+  
+  return count;
 }
 
 int lin_search(int *table,int F,int L,int key, int *ppos)
