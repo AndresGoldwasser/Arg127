@@ -75,12 +75,31 @@ PDICT init_dictionary (int size, char order)
 
 void free_dictionary(PDICT pdict)
 {
-	/* your code */
+/*ERROR CONTROL*/
+  if(!pdict){
+    return;
+  }
+
+  free(pdict->table);
+  return;
 }
 
 int insert_dictionary(PDICT pdict, int key)
 {
-	/* your code */
+	/*ERROR CONTROL*/
+  if(!pdict){
+    return ERR;
+  }
+  
+  /*ERROR CONTROL*/
+  if(pdict->n_data == pdict->size){
+    return ERR;
+  }
+
+  pdict->table[pdict->n_data] = key;
+  pdict->n_data++;
+
+  return OK;
 }
 
 int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys)
@@ -101,7 +120,14 @@ int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys)
 
 int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method)
 {
-	/* your code */
+	int ret;
+  if(!pdict||!ppos||!method){
+    return ERR;
+  }
+
+  ret = method(pdict->table, 0, pdict->n_data-1, key, ppos);
+  
+  return ret;
 }
 
 
@@ -134,12 +160,58 @@ int bin_search(int *table,int F,int L,int key, int *ppos)
 
 int lin_search(int *table,int F,int L,int key, int *ppos)
 {
-	/* your code */
+	int i, count=0, ret=ERR;
+	
+  /*CONTROL ERROR*/
+  if(!table||!ppos||L<F){
+    return ERR;
+  }
+
+  for(i=F;i<L;i++){
+    count++;
+    if(table[i] == key){
+      *ppos = i;
+      ret = OK;
+      break;
+    }
+  }
+
+  if(ret==OK){
+    return count;
+  }
+
+  return ERR;
 }
 
 int lin_auto_search(int *table,int F,int L,int key, int *ppos)
 {
-	/* your code */
+	int i, count=0, ret=ERR, aux;
+	
+  /*CONTROL ERROR*/
+  if(!table||!ppos||L<F){
+    return ERR;
+  }
+
+  for(i=F;i<L;i++){
+    count++;
+    if(table[i] == key){
+
+      /*SWAP*/
+      aux = table[i-1] ;
+      table[i-1] = table[i];
+      table[i] = aux;
+
+      *ppos = i-1;
+      ret = OK;
+      break;
+    }
+  }
+
+  if(ret==OK){
+    return count;
+  }
+
+  return ERR;
 }
 
 
