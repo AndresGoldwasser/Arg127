@@ -125,6 +125,7 @@ short generate_sorting_times(pfunc_sort method, char* file,
 
   return check;
 }
+
 short average_search_time(pfunc_search method, pfunc_key_generator generator, char order, int N, int n_times, PTIME_AA ptime){
   PDICT dict;
   int i, *perm, *mem, pos;
@@ -137,31 +138,15 @@ short average_search_time(pfunc_search method, pfunc_key_generator generator, ch
   if(dict==NULL)
     return ERR;
 
-  array_time = (double*)malloc(n_times*sizeof(double));
-  if(!array_time){
-    free_dictionary(dict);
-    return ERR;
-  }
-  array_ob = (double*)malloc(n_times*sizeof(double));
-  if(!array_ob){
-    free_dictionary(dict);
-    free(array_time);
-    return ERR;
-  }
-
   perm=generate_perm(N);
   if(!perm){
     free_dictionary(dict);
-    free(array_time);
-    free(array_ob);
     return ERR;
   }
 
   if(massive_insertion_dictionary(dict,perm,N)==ERR){
     free(perm);
     free_dictionary(dict);
-    free(array_time);
-    free(array_ob);
     return ERR;
   }
 
@@ -169,8 +154,23 @@ short average_search_time(pfunc_search method, pfunc_key_generator generator, ch
   if(!mem){
     free(perm);
     free_dictionary(dict);
+    return ERR;
+  }
+
+  array_ob=(double*)malloc((N*n_times)*sizeof(double));
+  if(!array_ob){
+    free(perm);
+    free_dictionary(dict);
+    free(mem);
+    return ERR;
+  }
+
+  array_time=(double*)malloc((N*n_times)*sizeof(double));
+  if(!array_time){
+    free(perm);
+    free_dictionary(dict);
+    free(mem);
     free(array_ob);
-    free(array_time);
     return ERR;
   }
 
@@ -186,18 +186,18 @@ short average_search_time(pfunc_search method, pfunc_key_generator generator, ch
     array_time[i] = (double) (stop - start) / CLOCKS_PER_SEC;
   }
 
-  ptime->n_elems=N*n_times;
-  ptime->N=N;
   ptime->time = media(array_time, N*n_times);
   ptime->average_ob = media(array_ob, n_times*N);
+  ptime->n_elems=N*n_times;
+  ptime->N=N;
   ptime->max_ob = array_ob[maxa(array_ob, 0, (n_times*N)-1)]; 
   ptime->min_ob = array_ob[mina(array_ob, 0, (n_times*N)-1)];
 
-  free_dictionary(dict);
   free(array_ob);
   free(array_time);
   free(mem);
   free(perm);
+  free_dictionary(dict);
 
   return OK;
 } 
@@ -210,9 +210,10 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator, 
 
   if(!file||n_times<1||num_max<num_min||!method||incr<1) return ERR;
 
-  for(i=num_min ; i < num_max; i+=incr, mem++);
+  for(i=num_min ; i <= num_max; i+=incr, mem++);
 
-  time = (PTIME_AA)malloc(mem*sizeof(TIME_AA));
+  time = (PTIME_AA)malloc((mem)*sizeof(TIME_AA));
+  if (!time) return ERR;
 
   for(i=num_min, ind=0; i <= num_max && check==OK; ind++, i+=incr){
     check=average_search_time(method, generator, order, i, n_times, &time[ind]);
