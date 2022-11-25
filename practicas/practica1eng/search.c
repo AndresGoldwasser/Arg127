@@ -63,6 +63,7 @@ PDICT init_dictionary (int size, char order)
 	if(size<=0||(order!=1&&order!=0))
     return NULL;
 
+  dict=(PDICT)malloc(sizeof(DICT));
   dict->size=size;
   dict->n_data=0;
   dict->order=order;
@@ -81,11 +82,11 @@ void free_dictionary(PDICT pdict)
   }
 
   free(pdict->table);
+  free(pdict);
   return;
 }
 
-int insert_dictionary(PDICT pdict, int key)
-{
+int insert_dictionary(PDICT pdict, int key){
 	int aux, j;
   
   /*ERROR CONTROL*/
@@ -115,6 +116,8 @@ int insert_dictionary(PDICT pdict, int key)
     pdict->table[j+1]=aux;
   }
 
+  return OK;
+}
 
 int massive_insertion_dictionary (PDICT pdict,int *keys, int n_keys)
 {
