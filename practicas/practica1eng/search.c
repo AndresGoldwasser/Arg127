@@ -12,6 +12,7 @@
 #include "search.h"
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 /**
@@ -67,7 +68,7 @@ PDICT init_dictionary (int size, char order)
   dict->size=size;
   dict->n_data=0;
   dict->order=order;
-  dict->table=(int*)malloc(size*sizeof(int));
+  dict->table=(int*)calloc(size, sizeof(int));
   if(dict->table==NULL)
     return NULL;
 
@@ -87,7 +88,7 @@ void free_dictionary(PDICT pdict)
 }
 
 int insert_dictionary(PDICT pdict, int key){
-	int aux, j;
+	int index;
   
   /*ERROR CONTROL*/
   if(!pdict){
@@ -102,19 +103,19 @@ int insert_dictionary(PDICT pdict, int key){
   /*ARRAY ISNT SORTED*/
   if(pdict->order == NOT_SORTED){
     pdict->table[pdict->n_data] = key;
-    pdict->n_data++;
   }
 
   /*ARRAY IS SORTED*/
   else if(pdict->order == SORTED){
-    aux=pdict->table[pdict->n_data-1]; 
-    j=pdict->n_data-2;
-    while (j >= 0 && pdict->table[j]>aux){
-      pdict->table[j+1]=pdict->table[j]; 
-      j--;
+    index = pdict->n_data-1;
+    while(index>=0 && key < pdict->table[index]){
+      pdict->table[index+1] = pdict->table[index];
+      index--;
     }
-    pdict->table[j+1]=aux;
+    pdict->table[index+1]=key;
   }
+
+  pdict->n_data++;
 
   return OK;
 }
@@ -159,7 +160,7 @@ int bin_search(int *table,int F,int L,int key, int *ppos)
     return 0;
   }
 
-  i=(L-F)/2;
+  i=(L+F)/2;
   count=1;
   if(table[i]==key){
     *ppos=i;

@@ -216,6 +216,7 @@ short generate_search_times(pfunc_search method, pfunc_key_generator generator, 
   if (!time) return ERR;
 
   for(i=num_min, ind=0; i <= num_max && check==OK; ind++, i+=incr){
+    printf("Voy por %d\n",i);
     check=average_search_time(method, generator, order, i, n_times, &time[ind]);
   }
 

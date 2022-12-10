@@ -1,1 +1,3 @@
 plot "ej1.txt" smooth freq with boxes
+plot "exercise5.log" using 1:3
+plot "exercise5.log" using 1:3, 0.85*x*(log(x)/log(2))

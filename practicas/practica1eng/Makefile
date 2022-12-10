@@ -3,7 +3,7 @@
 # It is assumed that the name of the source files is exercise1.c, exercise2.c,...,exercise.h
 #-----------------------
 
-CC = gcc -ansi -pedantic
+CC = gcc -ansi -pedantic -g
 CFLAGS = -Wall
 EXE = exercise1 exercise2
 
@@ -50,11 +50,11 @@ times.o : times.c times.h
 
 exercise1_test:
 	@echo Running exercise1
-	@./exercise1 -size 10 -key 5
+	@valgrind --leak-check=full --track-origins=yes ./exercise1 -size 100 -key 5
 
 exercise2_test:
 	@echo Running exercise2
-	@./exercise2 -num_min 1 -num_max 5 -incr 1 -n_times 1 -outputFile exercise5.log
+	@./exercise2 -num_min 1 -num_max 2000 -incr 1 -n_times 10 -outputFile exercise2.log
 
 #valgrind:
 #	valgrind --leak-check=full --track-origins=yes
