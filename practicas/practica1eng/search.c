@@ -152,7 +152,7 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method)
 /* Search functions of the Dictionary ADT */
 int bin_search(int *table,int F,int L,int key, int *ppos)
 {
-	int i,count;
+	int i,count=1;
   if(!table) return ERR;
   
   if(L<F){
@@ -161,7 +161,6 @@ int bin_search(int *table,int F,int L,int key, int *ppos)
   }
 
   i=(L+F)/2;
-  count=1;
   if(table[i]==key){
     *ppos=i;
     return count;
