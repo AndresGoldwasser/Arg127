@@ -152,7 +152,7 @@ int search_dictionary(PDICT pdict, int key, int *ppos, pfunc_search method)
 /* Search functions of the Dictionary ADT */
 int bin_search(int *table,int F,int L,int key, int *ppos)
 {
-	int i,count=1;
+	int i,count;
   if(!table) return ERR;
   
   if(L<F){
@@ -161,6 +161,7 @@ int bin_search(int *table,int F,int L,int key, int *ppos)
   }
 
   i=(L+F)/2;
+  count=1;
   if(table[i]==key){
     *ppos=i;
     return count;
@@ -212,7 +213,10 @@ int lin_auto_search(int *table,int F,int L,int key, int *ppos)
   for(i=F;i<L;i++){
     count++;
     if(table[i] == key){
-
+      if(i==0){
+        ret = OK;
+        break;
+      }
       /*SWAP*/
       aux = table[i-1] ;
       table[i-1] = table[i];
@@ -226,6 +230,11 @@ int lin_auto_search(int *table,int F,int L,int key, int *ppos)
 
   if(ret==OK){
     return count;
+  }
+
+  printf("Buscaba %d en \n", key);
+  for(i=F;i<L;i++){
+    printf("%d ", table[i]);
   }
 
   return ERR;

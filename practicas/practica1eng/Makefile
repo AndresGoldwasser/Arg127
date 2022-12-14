@@ -50,11 +50,11 @@ times.o : times.c times.h
 
 exercise1_test:
 	@echo Running exercise1
-	@valgrind --leak-check=full --track-origins=yes ./exercise1 -size 100 -key 5
+	@valgrind --leak-check=full --track-origins=yes ./exercise1 -size 100 -key 50
 
 exercise2_test:
 	@echo Running exercise2
-	@valgrind --leak-check=full --track-origins=yes ./exercise2 -num_min 100 -num_max 5000 -incr 100 -n_times 50 -outputFile exercise2.log
+	@./exercise2 -num_min 1000 -num_max 10000 -incr 100 -n_times 100 -outputFile exercise2.log
 
 #valgrind:
 #	valgrind --leak-check=full --track-origins=yes
