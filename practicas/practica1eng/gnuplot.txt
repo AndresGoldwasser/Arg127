@@ -34,9 +34,9 @@ Es el titulo de la grafica que sale arriba del todo
 set key left top
 Para elegir donde queremos que este la leyenda.
 
-comando que utilizamos en la practica 1
-plot "ej1.txt" smooth freq with boxes
-
 Estos dos comandos lo mejor es ponerlos antes de hacer "plot"
 
 Para reiniciarlo todo escribir exit y salir de la terminal. Al volver a entrar todo estara reiniciado.
+
+comando que utilizamos en la practica 1
+plot "ej1.txt" smooth freq with boxes
