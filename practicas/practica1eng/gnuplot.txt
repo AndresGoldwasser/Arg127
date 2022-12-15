@@ -26,7 +26,7 @@ Usaremos la propiedad matematica logA(B) = logx(B) / logx(A)
 log(x)/log(2) = log2(x)
 
 Recuerda que si quieres hacer un ajuste lineal tienes que multiplicar la funcion por una constante. Eso se hace a ojo.
-Por ejemplo: 0.0003log(x)/log(2)
+Por ejemplo: 0.0003*log(x)/log(2)
 
 plot "ej1.txt" smooth freq with boxes
 
