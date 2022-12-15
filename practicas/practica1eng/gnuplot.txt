@@ -1,3 +1,43 @@
 plot "ej1.txt" smooth freq with boxes
-plot "exercise5.log" using 1:3
-plot "exercise5.log" using 1:3, 0.85*x*(log(x)/log(2))
+
+Para usar GNUPLOT sigue estos pasos:
+Escribe "gnuplot" en la terminal, se te abrira una terminal aparte.
+
+El comando para crear la gráfica es plot. Tiene la siguiente estructura:
+
+plot "exercise5.log" using 1:3 with lines title "Tiempo"
+
+"exercise5.log" es el nombre del fichero donde esta la informacion
+"using 1:3" se utiliza para identificar que columnas crean el grafico. Por ejemplo en este caso, la columna1
+sera el eje x y la columna 3 el eje y.
+"with lines" se utiliza para que en lugar de aparecer puntos aparezcan lineas
+"title "Tiempo"" sirve para elegir que nombre ponerle a la funcion que se genera en la leyenda
+
+Si queremos colocar dos graficas en el mismo cuadro pondremos lo mismo 2 veces separado con una coma, algo así:
+
+plot "exercise5.log" using 1:2 with lines title "Tiempo", "exercise2.log" u 1:2 w lines title "Tiempo"
+(u = using, w = with)
+
+Si lo que queremos es colocar una funcion haremos lo mismo pero poniendo unicamente la funcion
+
+plot "exercise5.log" using 1:2 with lines title "Tiempo", log(x)/log(2)
+ATENCION: Gnuplot no tiene soporte para hacer logaritmos con diferente base.
+Usaremos la propiedad matematica logA(B) = logx(B) / logx(A)
+log(x)/log(2) = log2(x)
+
+Recuerda que si quieres hacer un ajuste lineal tienes que multiplicar la funcion por una constante. Eso se hace a ojo.
+Por ejemplo: 0.0003log(x)/log(2)
+
+plot "ej1.txt" smooth freq with boxes
+
+Por ultimo son importantes tambien los comandos:
+
+set title "Titulo de la grafica" 
+Es el titulo de la grafica que sale arriba del todo
+
+set key left top
+Para elegir donde queremos que este la leyenda.
+
+Estos dos comandos lo mejor es ponerlos antes de hacer "plot"
+
+Para reiniciarlo todo escribir exit y salir de la terminal. Al volver a entrar todo estara reiniciado.
